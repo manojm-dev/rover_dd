@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(questbot_description REQUIRED)
 
 install(
-  DIRECTORY launch worlds config 
+  DIRECTORY launch worlds config models
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -13,13 +13,11 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     # Packages share directory
-    pkg_share = FindPackageShare(
-        package='qestbot_description').find('questbot_description')
+    pkg_share = FindPackageShare('questbot_description').find('questbot_description')
 
     # File paths
-    rviz_config_path = os.path.join(pkg_share, 'config/display.rviz')
-    rqt_perspective_path = os.path.join(
-        pkg_share, 'config/display.perspective')
+    rviz_config_path = os.path.join(pkg_share, 'rviz/display.rviz')
+    rqt_perspective_path = os.path.join(pkg_share, 'rqt/display.perspective')
 
     # Launch configuration variables
     use_rviz = LaunchConfiguration('use_rviz')

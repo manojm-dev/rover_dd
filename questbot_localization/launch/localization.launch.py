@@ -1,8 +1,10 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, Command
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition,UnlessCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -11,43 +13,86 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     # Packages share directories
-    pkg_share = FindPackageShare(
-        'questbot_localization').find('questbot_localization')
+    pkg_share = FindPackageShare('questbot_localization').find('questbot_localization')
 
-    # File paths
-    default_ekf_config = os.path.join(pkg_share, 'config/ekf.yaml')
+    # Files paths
+    rviz_config = os.path.join(pkg_share, 'rviz/slam.rviz')
 
-    # Launch configuration variables with default values
+    # Launch configuration 
     use_sim_time = LaunchConfiguration('use_sim_time')
+    use_rviz = LaunchConfiguration('use_rviz')
+    sync =LaunchConfiguration('sync')
+    localization = LaunchConfiguration('localization')
 
-    # Launch configuration with file paths
-    ekf_config = LaunchConfiguration('ekf_config')
 
-    # Launch Arguments (used to modify at launch time)
+    # Launch Arguments 
     declare_arguments = [
+
         DeclareLaunchArgument(
             name='use_sim_time',
             default_value='false',
             choices=['true', 'false'],
             description='Use Simulation(Gazebo) Clock'
         ),
+        
         DeclareLaunchArgument(
-            name='ekf_config',
-            default_value=default_ekf_config,
-            description='Absolute path of ekf config file'
+            name='sync',
+            default_value='true',
+            choices=['true', 'false'],
+            description='Synchronous mode'
+        ),
+        
+        DeclareLaunchArgument(
+            name='localization',
+            default_value='false',
+            choices=['true', 'false'],
+            description='Localization mode'
+        ),
+        
+        DeclareLaunchArgument(
+            name='use_rviz',
+            default_value='true',
+            choices=['true', 'false'],
+            description='Use Rviz Visualization tool'
         ),
     ]
 
-    robot_localization_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
+    start_slamtb_async = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'slam_online_async.launch.py')), 
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'localization': localization
+            }.items(),
+        condition=UnlessCondition(sync)
+    )
+    
+    start_slamtb_sync = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'slam_online_sync.launch.py')), 
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'localization': localization
+            }.items(),
+        condition=IfCondition(sync)
+    )
+
+
+    # Start RViz
+    start_rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
         output='screen',
-        parameters=[ekf_config, {'use_sim_time': use_sim_time}]
+        arguments=['-d', rviz_config],
+        parameters=[{
+            'use_sim_time': True
+        }],
+        condition=IfCondition(use_rviz)
     )
 
     return LaunchDescription(
         declare_arguments + [
-            robot_localization_node
+            start_slamtb_async,
+            start_slamtb_sync,
+            start_rviz
         ]
     )

@@ -45,8 +45,7 @@ def generate_launch_description():
 
     # Start robot state publisher
     robot_state_publisher_node = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(
-            pkg_share, 'launch', 'rsp.launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'rsp.launch.py')),
         launch_arguments={
             'use_sim_time':   use_sim_time,
             'use_gazebo':   'true',
@@ -72,8 +71,7 @@ def generate_launch_description():
 
     # Data visualizations
     start_visualization_tools = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(
-            pkg_share, 'launch', 'visualize.launch.py'))
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'visualize.launch.py'))
     )
 
     return LaunchDescription(
