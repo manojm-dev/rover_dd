@@ -20,8 +20,8 @@ slam_toolbox:
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
-    map_file_name: src/questbot_localization/maps/factory_serial
-    map_start_pose: [4.0, -9.4, 1.5]
+    map_file_name: src/Questbot/questbot_localization/maps/factory_serial
+    map_start_pose: [0.48016051484584826, -7.475507285057956, -7.672247905810398e-07]
     #map_start_at_dock: true
 
     debug_logging: false

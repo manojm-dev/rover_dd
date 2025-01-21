@@ -40,6 +40,7 @@ def generate_launch_description():
         launch_arguments={'use_sim_time'    : use_sim_time,
                           'use_gazebo'      : 'true',
                           'use_gzsim'       : 'false',
+                          'drive_type'      : '6w_diffdrive'
                           }.items()
     )
 

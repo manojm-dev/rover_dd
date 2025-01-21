@@ -13,7 +13,7 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     # Packages share directories
-    pkg_share = FindPackageShare('irobot_localization').find('irobot_localization')
+    pkg_share = FindPackageShare('questbot_localization').find('questbot_localization')
     pkg_slamtb_share = FindPackageShare('slam_toolbox').find('slam_toolbox')
 
     # File paths

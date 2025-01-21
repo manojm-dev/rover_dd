@@ -11,7 +11,7 @@
     <xacro:include filename="macro/wheel.xacro" />
 
 
-    <!-- Define robot constants -->
+    <!-- Define robot properties -->
 
     <!-- Robot base constants -->
     <xacro:property name="base_width" value="0.31" />
