@@ -12,11 +12,10 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     # Packages share directory
-    pkg_share = FindPackageShare(
-        package='qestbot_description').find('questbot_description')
+    pkg_share = FindPackageShare('qestbot_description').find('questbot_description')
 
     # File paths
-    default_model_path = os.path.join(pkg_share, 'urdf/robot.urdf.xacro')
+    default_model_path = os.path.join(pkg_share, 'urdf/2wd_diffdrive/robot.urdf.xacro')
 
     # Launch configuration variables (used to modify at launch time)
     use_sim_time = LaunchConfiguration('use_sim_time')

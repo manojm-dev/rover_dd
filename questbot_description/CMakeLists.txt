@@ -11,7 +11,7 @@ find_package(ament_cmake REQUIRED)
 find_package(xacro)
 
 install(
-  DIRECTORY launch urdf config 
+  DIRECTORY launch rqt rviz urdf
   DESTINATION share/${PROJECT_NAME}
 )
 
