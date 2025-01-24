@@ -36,7 +36,7 @@ def generate_launch_description():
     )
 
     launch_robot_spawner = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'spawn_gz.launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'gzsim_spawn.launch.py')),
         launch_arguments={
             'robot_name': 'quesbot_2wd',
             'spawn_x'   : '1.0',

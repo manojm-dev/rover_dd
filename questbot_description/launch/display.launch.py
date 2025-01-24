@@ -13,33 +13,42 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
     # Packages share directory
-    pkg_share = FindPackageShare(
-        package='qestbot_description').find('questbot_description')
+    pkg_share = FindPackageShare('questbot_description').find('questbot_description')
 
     # Launch configuration variables
-    use_sim_time = LaunchConfiguration('use_sim_time')
     use_jsp = LaunchConfiguration('use_jsp')
     jsp_gui = LaunchConfiguration('jsp_gui')
+    use_gazebo = LaunchConfiguration('use_gazebo')
+    use_gzsim = LaunchConfiguration('use_gzsim')
 
     # Launch Arguments (used to modify at launch time)
     declare_arguments = [
-        DeclareLaunchArgument(
-            name='use_sim_time',
-            default_value='false',
-            choices=['true', 'false'],
-            description='Use Simulation(Gazebo) Clock'
-        ),
         DeclareLaunchArgument(
             name='use_jsp',
             default_value='true',
             choices=['true', 'false'],
             description='Flag to enable joint_state_publisher'
         ),
+        
         DeclareLaunchArgument(
             name='jsp_gui',
             default_value='false',
             choices=['true', 'false'],
             description='Flag to enable joint_state_publisher_gui'
+        ),
+        
+        DeclareLaunchArgument(
+            name='use_gazebo',
+            default_value='true',
+            choices=['true', 'false'],
+            description='Use Gazebo classic'
+        ),
+        
+        DeclareLaunchArgument(
+            name='use_gzsim',
+            default_value='false',
+            choices=['true', 'false'],
+            description='Use Gazebo Sim'
         ),
     ]
 
@@ -47,10 +56,9 @@ def generate_launch_description():
     robot_state_publisher_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(pkg_share, 'launch', 'rsp.launch.py')),
         launch_arguments={
-            'use_sim_time':   use_sim_time,
-            'use_gazebo':   'true',
-            'use_gzsim':   'false',
-        }.items()
+            'use_gazebo'    :   'true',
+            'use_gzsim'     :   'false',
+        }.items()   
     )
 
     # Joint state publisher
